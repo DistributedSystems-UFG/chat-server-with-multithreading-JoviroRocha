@@ -10,7 +10,7 @@ class AnsHandler(threading.Thread):
     self.server_socket = sock
 
   def run(self):
-        (conn, addr) = self.client_socket.accept()  # returns new socket and addr. client
+        (conn, addr) = self.server_socket.accept()  # returns new socket and addr. client
         time.sleep(10)
         print('Hello!!, I\'m' + str(threading.get_ident()))
         marshaled_msg_pack = conn.recv(1024)   # receive data from client
