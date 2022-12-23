@@ -5,15 +5,15 @@ import threading
 import const #- addresses, port numbers etc. (a rudimentary way to replace a proper naming service)
 
 def authentication():
-    i = 1
-    while(i < 4):
-        if(i == 2): print('You have just one more try!')
+    i = 0
+    while(True):
+        if(i == 2): print('\n\nYou have just one more try!\n\n')
         username = input('Enter your username: ')
         password = input('Enter your password: ')
         if(const.registry[username] and const.registry[username][2] == password):
             print('Welcome ' + username + '\n')
             return username
-        print('Wrong username or password!')
+        print('\nWrong username or password!\n')
         if(i == 2): sys.exit(1)
         i= i + 1
 
