@@ -63,7 +63,7 @@ while True:
     #
     # Get a message from a sender client
     (conn, addr) = server_sock.accept()  # returns new socket and addr. client
-    ans_handler = AnsHandler(conn, addr)
+    ans_handler = AnsHandler.__new__(conn, addr)
     ans_handler.start()
     #print("Chat Server: client is connected from address " + str(addr))
 
