@@ -2,12 +2,16 @@ from socket  import *
 import pickle
 import const #- addresses, port numbers etc. (a rudimentary way to replace a proper naming service)
 import threading
+import time
 
 class AnsHandler(threading.Thread):
-  def __init__(self, conn, addr):
+  def __init__(self, sock):
     threading.Thread.__init__(self)
+    self.server_socket = sock
 
   def run(self):
+        (conn, addr) = self.client_socket.accept()  # returns new socket and addr. client
+        time.sleep(10)
         print('Hello!!, I\'m' + str(threading.get_ident()))
         marshaled_msg_pack = conn.recv(1024)   # receive data from client
         msg_pack = pickle.loads(marshaled_msg_pack)
@@ -60,8 +64,7 @@ print("Chat Server is ready...")
 while True:
     #
     # Get a message from a sender client
-    (conn, addr) = server_sock.accept()  # returns new socket and addr. client
-    ans_handler = AnsHandler(conn, addr)
+    ans_handler = AnsHandler(server_sock)
     ans_handler.start()
     #print("Chat Server: client is connected from address " + str(addr))
 
