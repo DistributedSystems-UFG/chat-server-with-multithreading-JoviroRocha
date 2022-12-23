@@ -10,11 +10,12 @@ def authentication():
         if(i == 2): print('\n\nYou have just one more try!\n\n')
         username = input('Enter your username: ')
         password = input('Enter your password: ')
-        if(const.registry[username] and const.registry[username][2] == password):
+        if(not const.registry[username] or not (const.registry[username][2] == password)):
+            print('\nWrong username or password!\n')
+            if(i == 2): sys.exit(1)
+        else:
             print('Welcome ' + username + '\n')
-            return username
-        print('\nWrong username or password!\n')
-        if(i == 2): sys.exit(1)
+            return username   
         i= i + 1
 
 class RecvHandler(threading.Thread):
