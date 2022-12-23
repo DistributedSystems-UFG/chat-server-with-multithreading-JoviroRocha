@@ -8,7 +8,7 @@ class AnsHandler(threading.Thread):
     threading.Thread.__init__(self)
 
   def run(self):
-    while True:
+        print('Hello!!, I\'m' + threading.get_ident())
         marshaled_msg_pack = conn.recv(1024)   # receive data from client
         msg_pack = pickle.loads(marshaled_msg_pack)
         msg = msg_pack[0]
@@ -21,7 +21,7 @@ class AnsHandler(threading.Thread):
             dest_addr = const.registry[dest] # get address of destination in the registry
         except:
             conn.send(pickle.dumps("NACK")) # to do: send a proper error code
-            continue
+            return
         else:
             #print("Server: sending Ack to " + src)
             conn.send(pickle.dumps("ACK")) # send ACK to client
@@ -36,7 +36,7 @@ class AnsHandler(threading.Thread):
             client_sock.connect((dest_ip, dest_port))
         except:
             print ("Error: Destination client is down")
-            continue
+            return
         msg_pack = (msg, src)
         marshaled_msg_pack = pickle.dumps(msg_pack)
         client_sock.send(marshaled_msg_pack)
