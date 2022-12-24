@@ -4,6 +4,8 @@ import pickle
 import threading
 import const #- addresses, port numbers etc. (a rudimentary way to replace a proper naming service)
 
+lock = threading.Lock()
+
 def authentication():
     i = 0
     while(True):
@@ -27,12 +29,14 @@ class RecvHandler(threading.Thread):
     while True:
         #print('Client receiving handler is ready.')
         (conn, addr) = self.client_socket.accept() # accepts connection from server
+        lock.acquire
         #print('Server connected to me.')
         marshaled_msg_pack = conn.recv(1024)   # receive data from server
         msg_pack = pickle.loads(marshaled_msg_pack) # unmarshal message pack
         print("You got a new message!\nMESSAGE: " + msg_pack[0] + " - FROM: " + msg_pack[1] + '\n')
         conn.send(pickle.dumps("ACK")) # simply send the server an Ack to confirm
         conn.close()
+        lock.release()
     return # We need a condition for graceful termination
 
 me = authentication()
@@ -49,8 +53,10 @@ recv_handler.start()
 # Handle interactive loop
 while True:
     server_sock = socket(AF_INET, SOCK_STREAM) # socket to connect to server
+    lock.acquire(timeout=10)
     dest = input("ENTER DESTINATION: ")
     msg = input("ENTER MESSAGE: ")
+    lock.release()
     #
     # Connect to server
     try:
