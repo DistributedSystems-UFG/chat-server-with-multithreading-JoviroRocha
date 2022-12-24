@@ -33,8 +33,8 @@ class RecvHandler(threading.Thread):
         marshaled_msg_pack = conn.recv(1024)   # receive data from server
         msg_pack = pickle.loads(marshaled_msg_pack) # unmarshal message pack
         print("\n\nYou got a new message!\nMESSAGE: " + msg_pack[0] + " - FROM: " + msg_pack[1] + '\n')
-        if(x == 1): print("ENTER DESTINATION: ")
-        elif(x == 2): print("ENTER MESSAGE: ")
+        if(x == 1): print("ENTER DESTINATION: ", end="")
+        elif(x == 2): print("ENTER MESSAGE: ", end="")
         conn.send(pickle.dumps("ACK")) # simply send the server an Ack to confirm
         conn.close()
     return # We need a condition for graceful termination
