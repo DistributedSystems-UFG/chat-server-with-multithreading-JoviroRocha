@@ -2,7 +2,6 @@ from socket  import *
 import pickle
 import const #- addresses, port numbers etc. (a rudimentary way to replace a proper naming service)
 import threading
-import time
 
 class AnsHandler(threading.Thread):
   def __init__(self, conn, addr):
