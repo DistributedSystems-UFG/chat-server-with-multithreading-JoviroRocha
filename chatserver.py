@@ -9,8 +9,7 @@ class AnsHandler(threading.Thread):
     threading.Thread.__init__(self)
 
   def run(self):
-        time.sleep(10)
-        print('Hello!!, I\'m' + str(threading.get_ident()))
+        print('Hello!!, I\'m ' + str(threading.get_ident()) + ' And I\'m taking care of the following message:')
         marshaled_msg_pack = conn.recv(1024)   # receive data from client
         msg_pack = pickle.loads(marshaled_msg_pack)
         msg = msg_pack[0]
@@ -28,6 +27,7 @@ class AnsHandler(threading.Thread):
             #print("Server: sending Ack to " + src)
             conn.send(pickle.dumps("ACK")) # send ACK to client
         conn.close() # close the connection
+        time.sleep(10)
         #
         # Forward the message to the recipient client
         client_sock = socket(AF_INET, SOCK_STREAM) # socket to connect to clients
@@ -63,7 +63,7 @@ while True:
     #
     # Get a message from a sender client
     (conn, addr) = server_sock.accept()  # returns new socket and addr. client
-    ans_handler = AnsHandler.__new__(conn, addr)
+    ans_handler = AnsHandler(conn, addr)
     ans_handler.start()
     #print("Chat Server: client is connected from address " + str(addr))
 
